@@ -16,7 +16,7 @@ for (let i = 0; i < palavraArray.length; i++) { //no .LENGTH não se coloca () d
 
 }
 let repeatedLetters = Object.values(iguais);
-console.log(palavraArray.length);
+console.log(palavraArray.length); 
 
 
 
