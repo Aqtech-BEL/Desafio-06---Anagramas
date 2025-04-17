@@ -4,8 +4,8 @@ const prompt = require('prompt-sync')();
 let words = "";
 
 //AQUI É A ENTRADA E VERIFICAÇÃO DA words SE CONTÉM SOMENTE LETRAS E ESPAÇO
-while (!/^[a-zA-Z\s]*$/.test(words) || words.trim() === "") { //RegExp é esse jogo de caracteres, .TEST testa a string, .TRIM remove os espaços no inicio e final do Array.
-    words = prompt("Digite a words:");
+while (!/^[a-zA-Z\s]+$/.test(words)) { //RegExp é esse jogo de caracteres, .TEST testa a string, 
+    words = prompt("Digite a palavra:").trim(); //.TRIM remove os espaços no inicio e final do Array.
 }
 
 //AQUI TRANSFORMO UMA STRING EM UM ARRAY
@@ -30,39 +30,39 @@ const fatorial = (num) => {
 }
 
 //AQUI ESTOU PERCORRENDO O VETOR CRIADO COM OS VALORES DAS LETRAS REPETIDAS E FAZENDO O FATORIAL UNITAIO PARA JUNTAR A CONTA
-let valueLatters = 1;
+let valueLetters = 1;
 for (let i = 0; i < repeatedLetters.length; i++) {
-    valueLatters = valueLatters * fatorial(repeatedLetters[i]);
+    valueLetters = valueLetters * fatorial(repeatedLetters[i]);
 }
 
 //FAZER O FATORIAL DO TAMANHO TOTAL DA words
 let valueWords = fatorial(wordsArray.length);
 
 //AGORA VOU FAZER A CONTA PARA VER QUANTOS ANAGRAMAS A PALAVRA TEM!
-const valueAnagramas = (valueWords / valueLatters);
+let valueAnagramas = (valueWords / valueLetters);
 
 console.log(`A palavra ${words} tem ${valueAnagramas} anagramas!`)
 
 
+//EMBARALHA AS LETRAS COM FUNÇÃO RECURSIVA
+const gerarAnagramas = (prefixo, restante, resultado) => {
+    if (restante.length === 0) {
+        resultado.add(prefixo);
+    } else {
+        for (let i = 0; i < restante.length; i++) {
+            if (restante.indexOf(restante[i]) !== i) continue;
 
-
-
-
-
-
-
-
-
-
-/*COMO EU PLANEJEI
-let iguais = [];
-for (let i = 0; i < wordsArray.length; i++) { //no .LENGTH não se coloca () depois dele. e não precisa do <= só <
-    for (let j = i + 1; j < wordsArray.length; j++){ //i em 0 e j de i + 1 até o final — pra evitar comparar o mesmo par duas vezes (ou se repetir invertido)
-        if (wordsArray[i] === wordsArray[j]) {
-            iguais.push([i,j]);
+            const novaRestante = restante.slice(0, i) + restante.slice(i + 1);
+            gerarAnagramas(prefixo + restante[i], novaRestante, resultado);
         }
     }
+};
+
+if (words.length > 8) {
+    console.log("Muitos anagramas para mostrar. Tente uma palavra menor.");
+} else {
+    const resultado = new Set();
+    gerarAnagramas("", words, resultado);
+    console.log([...resultado].join(", "));
 }
 
-console.log(iguais);
-*/
